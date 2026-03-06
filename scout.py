@@ -7,7 +7,7 @@ def scout():
     print("-" * 30)
 
     try:
-        subprocess.check_output(["ping", "-c", "1", "8.8.8.8"], timeout=2)
+        subprocess.check_output(["ping", "-c", "1", "8.8.8.8"], timeout=2, stderr=subprocess.DEVNULL)
         print("Network Status: ONLINE")
     except:
         print("Network Status: OFFLINE")
