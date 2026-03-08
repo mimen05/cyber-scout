@@ -2,6 +2,20 @@ import os
 import subprocess
 import shutil
 
+def get_battery():
+    try:
+        cmd = "pmset -g batt"
+        output = subprocess.check_output(cmd, shell=True).decode()
+
+        parts = output.split('\t')
+        if len(parts) > 1:
+            status = parts[1].split(';')[0]
+            state = parts[1].split(';')[1].strip()
+            return f"{status} ({state})"
+        return "Battery data found, but unreadable"
+    except:
+        return "Battery data unavailable"
+
 def check_disk():
     total, used, free = shutil.disk_usage("/")
     total_gb = total // (2**30)
@@ -9,12 +23,12 @@ def check_disk():
     free_gb = free // (2**30)
 
     percent_used = (used / total) * 100
-    return f"{used_gb}GB / {total_gb}GB ({percent_used:.1f}% used)" 
+    return f"{used_gb}GB used / {free_gb}GB free ({percent_used:.1f}% used)" 
 
 def scout():
-    print("-" * 30)
+    print("-" * 45)
     print("CYBER-SCOUT STATUS: ACTIVE")
-    print("-" * 30)
+    print("-" * 45)
 
     try:
         subprocess.check_output(["ping", "-c", "1", "8.8.8.8"], timeout=2, stderr=subprocess.DEVNULL)
@@ -32,6 +46,8 @@ def scout():
 
     print(f"Disk Health:   {check_disk()}")
 
-    print("-" * 30)
+    print(f"Battery:       {get_battery()}")
+    
+    print("-" * 40)
 
 scout()
