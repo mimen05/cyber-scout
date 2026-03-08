@@ -48,6 +48,6 @@ def scout():
 
     print(f"Battery:       {get_battery()}")
     
-    print("-" * 40)
+    print("-" * 45)
 
 scout()
