@@ -2,6 +2,7 @@ import os
 import subprocess
 import shutil
 
+# Battery status check
 def get_battery():
     try:
         cmd = "pmset -g batt"
@@ -12,10 +13,11 @@ def get_battery():
             status = parts[1].split(';')[0]
             state = parts[1].split(';')[1].strip()
             return f"{status} ({state})"
-        return "Battery data found, but unreadable"
+        return "⚠️ ️ Battery data found, but unreadable"
     except:
-        return "Battery data unavailable"
+        return "⚠️ ️ Battery data unavailable"
 
+# Disk health check
 def check_disk():
     total, used, free = shutil.disk_usage("/")
     total_gb = total // (2**30)
@@ -25,29 +27,34 @@ def check_disk():
     percent_used = (used / total) * 100
     return f"{used_gb}GB used / {free_gb}GB free ({percent_used:.1f}% used)" 
 
+# Main logic
 def scout():
-    print("-" * 45)
-    print("CYBER-SCOUT STATUS: ACTIVE")
-    print("-" * 45)
+    print("-" * 60)
+    print("CYBER-SCOUT STATUS: ACTIVE ✅ ")
+    print("-" * 60)
+    print()
 
+    print(f"Battery 🔋 : {get_battery()}")
+
+    print(f"Disk Health 💾 : {check_disk()}")
+
+    # Network status check
     try:
         subprocess.check_output(["ping", "-c", "1", "8.8.8.8"], timeout=2, stderr=subprocess.DEVNULL)
-        print("Network Status: ONLINE")
+        print("Network Status: 🌐 ONLINE")
     except:
-        print("Network Status: OFFLINE")
+        print("Network Status: ⚠️ ️ OFFLINE")
 
+    # Download file check
     downloads = os.path.expanduser("~/Downloads")
     scripts = [f for f in os.listdir(downloads) if f.endswith('.sh')]
 
     if scripts:
-        print(f"Security Status: Found {len(scripts)} script(s) in Downloads!")
+        print(f"Security Status: Found {len(scripts)} script(s) in Downloads! ⚠️ ")
     else:
-        print("Security Status: No suspicious scripts found.")
-
-    print(f"Disk Health:   {check_disk()}")
-
-    print(f"Battery:       {get_battery()}")
+        print("Security Status: No suspicious scripts found. ✅ ")
     
-    print("-" * 45)
+    print()
+    print("-" * 60)
 
 scout()
