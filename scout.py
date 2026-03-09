@@ -2,6 +2,13 @@ import os
 import subprocess
 import shutil
 
+# ANSI Colour Codes
+GREEN = "\033[92m"
+RED = "\033[91m"
+BOLD = "\033[1m"
+RESET = "\033[0m" # 'Cleans' the colour so it doesn't leak into the next line
+
+
 # Battery status check
 def get_battery():
     try:
@@ -25,7 +32,7 @@ def check_disk():
     free_gb = free // (2**30)
 
     percent_used = (used / total) * 100
-    return f"{used_gb}GB used / {free_gb}GB free ({percent_used:.1f}% used)" 
+    return f"{used_gb}GB used / {free_gb}GB free ({percent_used:.1f}% used)"
 
 # Main logic
 def scout():
@@ -41,18 +48,18 @@ def scout():
     # Network status check
     try:
         subprocess.check_output(["ping", "-c", "1", "8.8.8.8"], timeout=2, stderr=subprocess.DEVNULL)
-        print("Network Status: 🌐 ONLINE")
+        print(f"Network Status: 🌐 {GREEN}{BOLD}ONLINE{RESET}")
     except:
-        print("Network Status: ⚠️ ️ OFFLINE")
+        print(f"Network Status: ⚠️  {RED}{BOLD}OFFLINE{RESET}")
 
     # Download file check
     downloads = os.path.expanduser("~/Downloads")
     scripts = [f for f in os.listdir(downloads) if f.endswith('.sh')]
 
     if scripts:
-        print(f"Security Status: Found {len(scripts)} script(s) in Downloads! ⚠️ ")
+        print(f"Security Status:{RED}{BOLD} Found {len(scripts)} script(s) in Downloads!{RESET} ⚠️ ")
     else:
-        print("Security Status: No suspicious scripts found. ✅ ")
+        print(f"Security Status:{GREEN}{BOLD} No suspicious scripts found.{RESET} ✅ ")
     
     print()
     print("-" * 60)
