@@ -2,7 +2,7 @@ import os
 import subprocess
 import shutil
 
-# ANSI Colour Codes
+# ANSI Colour Codes for clearer output
 GREEN = "\033[92m"
 RED = "\033[91m"
 BOLD = "\033[1m"
