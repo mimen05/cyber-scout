@@ -58,6 +58,10 @@ def scout():
 
     if scripts:
         print(f"Security Status:{RED}{BOLD} Found {len(scripts)} script(s) in Downloads!{RESET} ⚠️ ")
+
+        for s in scripts:
+            print(f"   - {s}")   
+
     else:
         print(f"Security Status:{GREEN}{BOLD} No suspicious scripts found.{RESET} ✅ ")
     
